@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 设置为IUserDao接口方法提供sql语句配置 -->
+<mapper namespace="com.elies.springboot.dao.UserMapper">
+
+    <resultMap id="BaseResultMap" type="com.elies.springboot.domain.User">
+        <result column="user_id" property="userId" javaType="java.lang.Long" />
+        <result column="login_name" property="loginName" javaType="java.lang.String" />
+        <result column="login_password" property="loginPassword" javaType="java.lang.String"/>
+        <result column="user_name" property="userName" javaType="java.lang.String"/>
+        <result column="user_sex" property="userSex" javaType="java.lang.String"/>
+        <result column="user_age" property="userAge" javaType="java.lang.Integer"/>
+        <result column="user_address" property="userAddress" javaType="java.lang.String"/>
+        <result column="user_account" property="userAccount" javaType="java.lang.String"/>
+        <result column="create_time" property="createTime" javaType="java.lang.Long"/>
+        <result column="update_time" property="updateTime" javaType="java.lang.Long"/>
+    </resultMap>
+
+    <resultMap id="ListResultMap" type="com.elies.springboot.domain.UserList">
+        <result column="user_id" property="userId" javaType="java.lang.Long" />
+        <result column="user_name" property="userName" javaType="java.lang.String"/>
+        <result column="user_sex" property="userSex" javaType="java.lang.String"/>
+        <result column="user_age" property="userAge" javaType="java.lang.Integer"/>
+        <result column="user_address" property="userAddress" javaType="java.lang.String"/>
+        <result column="user_account" property="userAccount" javaType="java.lang.String"/>
+    </resultMap>
+
+    <sql id="baseColumns">
+        user_id AS "userId",
+        login_name AS "loginName",
+        login_password AS "loginPassword",
+        user_name AS "userName",
+        user_sex AS "userSex",
+        user_age AS "userAge",
+        user_address AS "userAddress",
+        user_account AS "userAccount"
+    </sql>
+
+    <sql id="listColumns">
+        user_id AS "userId",
+        user_name AS "userName",
+        (CASE user_sex WHEN 1 THEN '男' ELSE '女' END) AS "userSex",
+        user_age AS "userAge",
+        user_address AS "userAddress",
+        user_account AS "userAccount"
+    </sql>
+
+    <select id="findById" resultType="User">
+        SELECT
+        <include refid="baseColumns" />
+        FROM sys_user
+        WHERE user_id = #{userId}
+    </select>
+
+    <select id="findByLogin" resultType="User">
+        SELECT
+        <include refid="baseColumns" />
+        FROM sys_user
+        WHERE login_name=#{loginName} AND login_password=#{loginPassword};
+    </select>
+
+    <select id="findByCondition" parameterType="UserQuery" resultMap="ListResultMap">
+        SELECT
+        <include refid="listColumns" />
+        FROM sys_user
+        <where>
+            <if test="userName!=null and userName!=''">
+                AND user_name LIKE CONCAT('%', #{userName}, '%')
+            </if>
+            <if test="userSex!=null">
+                AND user_sex = #{userSex}
+            </if>
+            <if test="lowerAge!=null">
+                AND user_age >= #{lowerAge}
+            </if>
+            <if test="upperAge!=null">
+                AND user_age &lt;= #{upperAge}
+            </if>
+            <if test="userAddress!=null and userAddress!=''">
+                AND user_address LIKE CONCAT('%', #{userAddress}, '%')
+            </if>
+        </where>
+    </select>
+
+    <insert id="insert" parameterType="User" useGeneratedKeys="true" keyProperty="user_id">
+        INSERT INTO sys_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId!=null">
+                user_id,
+            </if>
+            <if test="loginName!=null">
+                login_name,
+            </if>
+            <if test="loginPassword!=null">
+                login_password,
+            </if>
+            <if test="userName!=null">
+                user_name,
+            </if>
+            <if test="userSex!=null">
+                user_sex,
+            </if>
+            <if test="userAge!=null">
+                user_age,
+            </if>
+            <if test="userAddress!=null">
+                user_address,
+            </if>
+            <if test="userAccount!=null">
+                user_account,
+            </if>
+            <if test="createTime!=null">
+                create_time,
+            </if>
+            <if test="updateTime!=null">
+                update_time
+            </if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="userId!=null">
+                #{userId},
+            </if>
+            <if test="loginName!=null">
+                #{loginName},
+            </if>
+            <if test="loginPassword!=null">
+                #{loginPassword},
+            </if>
+            <if test="userName!=null">
+                #{userName},
+            </if>
+            <if test="userSex!=null">
+                #{userSex},
+            </if>
+            <if test="userAge!=null">
+                #{userAge},
+            </if>
+            <if test="userAddress!=null">
+                #{userAddress},
+            </if>
+            <if test="userAccount!=null">
+                #{userAccount},
+            </if>
+            <if test="createTime!=null">
+                #{createTime},
+            </if>
+            <if test="updateTime!=null">
+                #{updateTime}
+            </if>
+        </trim>
+    </insert>
+    <update id="update" parameterType="User">
+        update sys_user
+        <set>
+            <if test="userId!=null">
+                user_id=#{userId},
+            </if>
+            <if test="loginName!=null">
+                login_name=#{loginName},
+            </if>
+            <if test="loginPassword!=null">
+                login_password=#{loginPassword},
+            </if>
+            <if test="userName!=null">
+                user_name=#{userName},
+            </if>
+            <if test="userSex!=null">
+                user_sex=#{userSex},
+            </if>
+            <if test="userAge!=null">
+                user_age=#{userAge},
+            </if>
+            <if test="userAddress!=null">
+                user_address=#{userAddress},
+            </if>
+            <if test="userAccount!=null">
+                user_account=#{userAccount},
+            </if>
+            <if test="createTime!=null">
+                create_time=#{createTime},
+            </if>
+            <if test="updateTime!=null">
+                update_time=#{updateTime}
+            </if>
+        </set>
+        <where>
+            user_id = #{userId}
+        </where>
+    </update>
+
+    <delete id="delete">
+        DELETE FROM sys_user WHERE user_id = #{userId}
+    </delete>
+
+    <delete id="batchDelete">
+        DELETE FROM sys_user where user_id in ( ${userIds} )
+    </delete>
+</mapper>
