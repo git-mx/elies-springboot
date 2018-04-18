@@ -48,8 +48,10 @@ public enum ResponseMessage {
     public static final String FAIL_CODE = "1";
     public static final MessageUtil RETURN_CODE_SUCCESS = new MessageUtil("0", "成功");
     public static final MessageUtil RETURN_CODE_FALL = new MessageUtil("1", "失败");
-    public static final MessageUtil RETURN_CODE_UNKNOWN_ERROR = new MessageUtil("3", "未知异常");
-    public static final MessageUtil RETURN_CODE_SERVER_ERROR = new MessageUtil("4", "内部服务器错误");
-    public static final MessageUtil RETURN_CODE_PARAM_IS_NULL = new MessageUtil("5", "参数${paramName}为空！");
-    public static final MessageUtil RETURN_CODE_PARAM_IS_INVALID = new MessageUtil("6", "参数${paramName}无效！");
+    public static final MessageUtil PARAM_ERROR = new MessageUtil("2", "参数错误");
+    public static final MessageUtil SESSION_TIMEOUT = new MessageUtil("3", "登录超时，请从新登录");
+    public static final MessageUtil RETURN_CODE_UNKNOWN_ERROR = new MessageUtil("4", "未知异常");
+    public static final MessageUtil RETURN_CODE_SERVER_ERROR = new MessageUtil("5", "内部服务器错误");
+    public static final MessageUtil RETURN_CODE_PARAM_IS_NULL = new MessageUtil("6", "参数${paramName}为空！");
+    public static final MessageUtil RETURN_CODE_PARAM_IS_INVALID = new MessageUtil("7", "参数${paramName}无效！");
 }

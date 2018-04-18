@@ -1,5 +1,7 @@
 package com.elies.springboot.common;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
@@ -11,6 +13,9 @@ import redis.clients.jedis.JedisPool;
  */
 @Service
 public class RedisService {
+
+    private Logger logger = LoggerFactory.getLogger(RedisService.class);
+
 
     @Autowired
     private JedisPool jedisPool;
@@ -50,5 +55,17 @@ public class RedisService {
             returnResource(jedis);
         }
         return result;
+    }
+
+    public boolean expire(String key, Integer expireSeconds){
+        try{
+            Jedis jedis = getResource();
+            jedis.expire(key, expireSeconds);
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            return true;
+        }
     }
 }
